@@ -8,8 +8,8 @@ import com.puppal.invoice.model.InvoicePaymentModel;
 
 public interface InvoicePaymentRepository extends MongoRepository<InvoicePaymentModel, String>{
 
-	public InvoicePaymentModel findByInvoiceItemId(long invoiceItemId);
-	public  List <InvoicePaymentModel>  findByInvoiceId(long invoiceId);
+	public InvoicePaymentModel findByInvoiceItemId(String invoiceItemId);
+	
 	@SuppressWarnings("unchecked")
 	public InvoicePaymentModel save(InvoicePaymentModel invoicePaymentModel);
 }

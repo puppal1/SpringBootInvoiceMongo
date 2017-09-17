@@ -41,25 +41,26 @@ public class InvoiceController {
 //	}
 
 	@RequestMapping(value = "/{customeId}/invoice", method = RequestMethod.POST)
-	public InvoiceModel createInvoice(@RequestBody InvoiceModel invoiceModel) {
+	public InvoiceModel createInvoice(@PathVariable long customeId, @RequestBody InvoiceModel invoiceModel) {
+		invoiceModel.setCustomerAccountId(customeId);
 		return invServ.createInvoice(invoiceModel);
 
 	}
 
-//	@RequestMapping(value = "/{customeId}/invoice/{invoiceId}/invoiceItem", method = RequestMethod.POST)
-//	public ResponseEntity<String> createInvoiceItem(@RequestBody InvoiceItemModel invoiceItemModel) {
-//		invServ.createInvoiceItem(invoiceItemModel);
-//		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
-//
-//	}
-//
-//	@RequestMapping(value = "/{customeId}/invoice/{invoiceId}/invoiceItem/{invoiceId}/payment", method = RequestMethod.POST)
-//	public ResponseEntity<String> createInvoiceItemPayment(@RequestBody InvoicePaymentModel invoicePaymentModel) {
-//		System.out.println(" invoicePaymentModel.getInvoiceId() " + invoicePaymentModel.getInvoiceId());
-//		invServ.createInvoiceItemPayment(invoicePaymentModel);
-//		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
-//
-//	}
+	@RequestMapping(value = "/invoice/{invoiceId}/invoiceItem", method = RequestMethod.POST)
+	public InvoiceItemModel createInvoiceItem(@PathVariable String invoiceId, @RequestBody InvoiceItemModel invoiceItemModel) {
+		invoiceItemModel.setInvoiceid(invoiceId);
+		return invServ.createInvoiceItem(invoiceItemModel);
+		//return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/invoice/invoiceItem/{invoiceItemId}/payment", method = RequestMethod.POST)
+	public InvoicePaymentModel createInvoiceItemPayment(@PathVariable String invoiceItemId,@RequestBody InvoicePaymentModel invoicePaymentModel) {
+		invoicePaymentModel.setInvoiceItemId(invoiceItemId);
+		return invServ.createInvoiceItemPayment(invoicePaymentModel);
+
+	}
 ////
 ////	@RequestMapping(value = "/payment/create", method = RequestMethod.POST)
 ////	public ResponseEntity<String> createInvoicePayment(@RequestBody InvoicePaymentModel invoicePaymentModel) {

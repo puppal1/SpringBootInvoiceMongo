@@ -36,11 +36,11 @@ public class InvoiceService {
 	public InvoiceModelExtended getInvoice(long id) {
 		InvoiceModel mm = invoiceRepository.findByInvoiceId(id);
 		List<InvoiceItemModel> list = invoiceItemRepository.findByInvoiceid(id);
-		List<InvoicePaymentModel> listP = invoicePaymentRepository.findByInvoiceId(id);
+//		List<InvoicePaymentModel> listP = invoicePaymentRepository.findByInvoiceId(id);
 		InvoiceModelExtended ext = new InvoiceModelExtended();
-		ext.setInvoiceItems(list);
-		ext.setInvoiceModel(mm);
-		ext.setInvoicePaymentModel(listP);
+//		ext.setInvoiceItems(list);
+//		ext.setInvoiceModel(mm);
+//		ext.setInvoicePaymentModel(listP);
 		return ext;
 	}
 
@@ -71,8 +71,9 @@ public class InvoiceService {
 		return invoiceItemRepository.save(invoiceItemModel);
 	}
 
-	public void createInvoiceItemPayment(InvoicePaymentModel invoicePaymentModel) {
-		invoicePaymentRepository.save(invoicePaymentModel);
+	public InvoicePaymentModel createInvoiceItemPayment(InvoicePaymentModel invoicePaymentModel) {
+		invoicePaymentModel.setInvoiceItempaymentid(InvoiceServiceHelper.getSaltString());
+		return invoicePaymentRepository.save(invoicePaymentModel);
 	}
 
 	public int updateInvoiceItem(InvoiceItemModel invoiceItemModel) {
