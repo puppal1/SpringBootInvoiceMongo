@@ -17,39 +17,45 @@ import com.puppal.invoice.model.InvoiceModelExtended;
 import com.puppal.invoice.model.InvoicePaymentModel;
 import com.puppal.invoice.service.InvoiceService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/customer")
 public class InvoiceController {
-//	// /customers/{customer_account_id}/invoices/{invoice_id}
 
 	@Autowired
 	InvoiceService invServ;
 
-//	@RequestMapping(value = "/{customeId}/invoice/", method = RequestMethod.GET)
-//	public List<InvoiceModel> getInvoicesByCustomerId(@PathVariable long customeId) {
-//		return invServ.getInvoicesByCustomerId(customeId);
-//	}
-//
-//	@RequestMapping(value = "/{customeId}/invoice/{invoiceId}", method = RequestMethod.GET)
-//	public InvoiceModelExtended getInvoice(@PathVariable long invoiceId) {
-//		return invServ.getInvoice(invoiceId);
-//	}
-//
-//	@RequestMapping(value = "/{customeId}/invoice/{invoiceId}/invoiceItem/{invoice_item_id}", method = RequestMethod.GET)
-//	public InvoiceItemModel getInvoiceItem(@PathVariable long invoice_item_id) {
-//		return invServ.getInvoiceItem(invoice_item_id);
-//	}
+	@RequestMapping(value = "/{customeId}/invoice/", method = RequestMethod.GET)
+	public List<InvoiceModel> getInvoicesByCustomerId(@PathVariable long customeId) {
+		return invServ.getInvoicesByCustomerId(customeId);
+	}
 
-	@RequestMapping(value = "/{customeId}/invoice", method = RequestMethod.POST)
-	public InvoiceModel createInvoice(@PathVariable long customeId, @RequestBody InvoiceModel invoiceModel) {
-		invoiceModel.setCustomerAccountId(customeId);
+	@RequestMapping(value = "/invoice/{invoiceId}", method = RequestMethod.GET)
+	public InvoiceModel getInvoice(@PathVariable String invoiceId) {
+		return invServ.getInvoice(invoiceId);
+	}
+
+	@RequestMapping(value = "/invoice/invoiceItem/{invoice_item_id}", method = RequestMethod.GET)
+	public InvoiceItemModel getInvoiceItem(@PathVariable String invoice_item_id) {
+		return invServ.getInvoiceItem(invoice_item_id);
+	}
+
+	 @ApiOperation(value = "Post Invoice", nickname = "Create Invoice")
+	 @ApiImplicitParams({
+	        @ApiImplicitParam(name = "Customer ID", value = "Nueric cust it", required = true, dataType = "number", paramType = "query", defaultValue="123")
+	        
+	      })
+	@RequestMapping(value = "/invoice", method = RequestMethod.POST)
+	public InvoiceModel createInvoice(@RequestBody InvoiceModel invoiceModel) {
 		return invServ.createInvoice(invoiceModel);
 
 	}
-
-	@RequestMapping(value = "/invoice/{invoiceId}/invoiceItem", method = RequestMethod.POST)
-	public InvoiceItemModel createInvoiceItem(@PathVariable String invoiceId, @RequestBody InvoiceItemModel invoiceItemModel) {
-		invoiceItemModel.setInvoiceid(invoiceId);
+	 //@PathVariable String invoiceId,
+	@RequestMapping(value = "/invoice/invoiceItem", method = RequestMethod.POST)
+	public InvoiceItemModel createInvoiceItem( @RequestBody InvoiceItemModel invoiceItemModel) {
 		return invServ.createInvoiceItem(invoiceItemModel);
 		//return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
 
@@ -61,26 +67,20 @@ public class InvoiceController {
 		return invServ.createInvoiceItemPayment(invoicePaymentModel);
 
 	}
-////
-////	@RequestMapping(value = "/payment/create", method = RequestMethod.POST)
-////	public ResponseEntity<String> createInvoicePayment(@RequestBody InvoicePaymentModel invoicePaymentModel) {
-////		invServ.createInvoicePayment(invoicePaymentModel);
-////		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
-////
-////	}
-//
-//	@RequestMapping(value = "/{customeId}/invoice/{invoiceId}/invoiceItem", method = RequestMethod.PUT)
-//	public ResponseEntity<String> updateInvoiceItem(@RequestBody InvoiceItemModel invoiceItemModel) {
-//		invServ.updateInvoiceItem(invoiceItemModel);
-//		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
-//
-//	}
-//
-//	@RequestMapping(value = "/{customeId}/invoice/", method = RequestMethod.PUT)
-//	public ResponseEntity<String> updateInvoice(@RequestBody InvoiceModel invoiceModel) {
-//		invServ.updateInvoice(invoiceModel);
-//		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
-//
-//	}
+
+
+	@RequestMapping(value = "/invoice/invoiceItem", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateInvoiceItem(@RequestBody InvoiceItemModel invoiceItemModel) {
+		invServ.updateInvoiceItem(invoiceItemModel);
+		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/invoice/", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateInvoice(@RequestBody InvoiceModel invoiceModel) {
+		invServ.updateInvoice(invoiceModel);
+		return new ResponseEntity<String>("Invoice saved successfully", HttpStatus.OK);
+
+	}
 
 }

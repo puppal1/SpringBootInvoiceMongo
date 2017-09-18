@@ -8,7 +8,7 @@ import com.puppal.invoice.model.InvoiceModel;
 
 public interface InvoiceRepository extends MongoRepository<InvoiceModel, String> {
 
-	public List <InvoiceModel> findByCustomerAccountId(long customerAccountId);
-	public  InvoiceModel findByInvoiceId(long invoiceId);
+	public List <InvoiceModel> findByCustomerId(long customerId);
+	public  InvoiceModel findByInvoiceId(String invoiceId);
 	public InvoiceModel save(InvoiceModel invoiceModel);
 }

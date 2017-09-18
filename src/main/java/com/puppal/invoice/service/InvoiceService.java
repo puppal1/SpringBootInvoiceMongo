@@ -33,22 +33,24 @@ public class InvoiceService {
 	@Autowired
 	MongoTemplate mongoTemplate;
 
-	public InvoiceModelExtended getInvoice(long id) {
+	public InvoiceModel getInvoice(String id) {
 		InvoiceModel mm = invoiceRepository.findByInvoiceId(id);
 		List<InvoiceItemModel> list = invoiceItemRepository.findByInvoiceid(id);
-//		List<InvoicePaymentModel> listP = invoicePaymentRepository.findByInvoiceId(id);
-		InvoiceModelExtended ext = new InvoiceModelExtended();
-//		ext.setInvoiceItems(list);
-//		ext.setInvoiceModel(mm);
-//		ext.setInvoicePaymentModel(listP);
-		return ext;
+		mm.setInvoiceItems(list);
+		return mm;
 	}
 
 	public List<InvoiceModel> getInvoicesByCustomerId(long customer_account_id) {
-		return invoiceRepository.findByCustomerAccountId(customer_account_id);
+		
+		List<InvoiceModel> invModelList = invoiceRepository.findByCustomerId(customer_account_id);
+		for (InvoiceModel invoiceModel : invModelList) {
+			List<InvoiceItemModel> list = invoiceItemRepository.findByInvoiceid(invoiceModel.getInvoiceId());
+			invoiceModel.setInvoiceItems(list);
+		}
+		return invModelList;
 	}
 
-	public InvoiceItemModel getInvoiceItem(long invoiceitemid) {
+	public InvoiceItemModel getInvoiceItem(String invoiceitemid) {
 		return invoiceItemRepository.findByInvoiceitemid(invoiceitemid);
 	}
 
@@ -79,7 +81,7 @@ public class InvoiceService {
 	public int updateInvoiceItem(InvoiceItemModel invoiceItemModel) {
 		Query query = new Query(Criteria.where("invoiceitemid").is(invoiceItemModel.getInvoiceitemid()));
 		Update update = new Update();
-		update.set("invoiceStatusId", invoiceItemModel.getInvoiceitemstatusid());
+		update.set("invoiceitemCost", invoiceItemModel.getInvoiceitemCost());
 
 		WriteResult result = mongoTemplate.updateFirst(query, update, InvoiceItemModel.class);
 
@@ -93,7 +95,7 @@ public class InvoiceService {
 	public int updateInvoice(InvoiceModel invoiceModel) {
 		Query query = new Query(Criteria.where("invoiceId").is(invoiceModel.getInvoiceId()));
 		Update update = new Update();
-		update.set("invoiceStatusId", invoiceModel.getInvoiceStatusId());
+		update.set("totalCost", invoiceModel.getTotalCost());
 
 		WriteResult result = mongoTemplate.updateFirst(query, update, InvoiceModel.class);
 

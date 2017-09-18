@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class InvoiceModel {
 	@Id
 	private String objectId; 
-	private long customerAccountId;
-	
 	private String invoiceId;
 	private long customerId;
 	private Date invoiceCreateDate;
@@ -32,14 +30,6 @@ public class InvoiceModel {
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
 	}
-	public long getCustomerAccountId() {
-		return customerAccountId;
-	}
-	public void setCustomerAccountId(long customerAccountId) {
-		this.customerAccountId = customerAccountId;
-	}
-
-
 	
 	public String getInvoiceId() {
 		return invoiceId;

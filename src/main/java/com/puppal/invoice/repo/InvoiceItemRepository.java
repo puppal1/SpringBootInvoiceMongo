@@ -8,9 +8,9 @@ import com.puppal.invoice.model.InvoiceItemModel;
 
 public interface InvoiceItemRepository extends MongoRepository<InvoiceItemModel, String> {
 
-	public InvoiceItemModel findByInvoiceitemid(long invoiceitemid);
+	public InvoiceItemModel findByInvoiceitemid(String invoiceitemid);
 
-	public List<InvoiceItemModel> findByInvoiceid(long invoiceid);
+	public List<InvoiceItemModel> findByInvoiceid(String invoiceid);
 
 	@SuppressWarnings("unchecked")
 	public InvoiceItemModel save(InvoiceItemModel invoiceItemModel);
